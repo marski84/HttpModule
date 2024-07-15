@@ -21,9 +21,9 @@ public class HttpModuleApplication {
                 " \"Hard disk size\": \"1 TB\" } }";
 
 
-        JsonNode object= httpHandler.post("https://api.restful-api.dev/objects", jsonString);
-        httpHandler.delete("https://api.restful-api.dev/objects/ff80818190966d7f01909dfb82081637");
-        JsonNode objects = httpHandler.get("https://api.restful-api.dev/objects");
+        JsonNode object= httpHandler.post("https://api.restful-api.dev/objects", null, jsonString);
+//        httpHandler.delete("https://api.restful-api.dev/objects/ff80818190966d7f01909dfb82081637", null);
+        JsonNode objects = httpHandler.get("https://api.restful-api.dev/objects", null);
 
 
     }
