@@ -3,7 +3,6 @@ package org.localhost.httpmodule.httpRequestUtils;
 import org.apache.http.Header;
 import org.apache.http.client.methods.*;
 import org.apache.http.entity.StringEntity;
-import org.localhost.httpmodule.exceptions.HttpMethodNotSuitableForPayloadException;
 import org.localhost.httpmodule.exceptions.NoSuchHttpMethodException;
 
 import java.net.MalformedURLException;

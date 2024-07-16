@@ -9,63 +9,64 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.localhost.httpmodule.httpRequestUtils.HttpRequestFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.net.http.HttpResponse;
 import java.util.Objects;
 
 
 //@Service
 public class HttpHandlerImpl implements HttpHandler {
+    private static final Logger log = LoggerFactory.getLogger(HttpHandlerImpl.class);
     private final CloseableHttpClient httpClient = HttpClients.createDefault();
-    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
-    public JsonNode get(String url, Header[] headers) {
+    public CloseableHttpResponse get(String url, Header[] headers) {
         HttpUriRequest getRequest = createSimpleRequest(url, headers, HttpRequestFactory.GET);
         return executeRequest(getRequest);
     }
 
     @Override
-    public JsonNode delete(String url, Header[] headers) {
+    public CloseableHttpResponse delete(String url, Header[] headers) {
         HttpUriRequest deleteRequest = createSimpleRequest(url, headers, HttpRequestFactory.DELETE);
         return executeRequest(deleteRequest);
     }
 
     @Override
-    public JsonNode post(String url, Header[] headers, String body) {
-        Objects.requireNonNull(url, "url cannot be null");
+    public CloseableHttpResponse post(String url, Header[] headers, String body) {
         HttpUriRequest postRequest = createRequestWithPayload(url, headers, HttpRequestFactory.POST, body);
         return executeRequest(postRequest);
     }
 
     @Override
-    public JsonNode put(String url, Header[] headers, String body) {
-        Objects.requireNonNull(url, "url cannot be null");
+    public CloseableHttpResponse put(String url, Header[] headers, String body) {
         HttpUriRequest postRequest = createRequestWithPayload(url, headers, HttpRequestFactory.PUT, body);
         return executeRequest(postRequest);    }
 
     @Override
-    public JsonNode patch(String url, Header[] headers, String body) {
-        Objects.requireNonNull(url, "url cannot be null");
+    public CloseableHttpResponse patch(String url, Header[] headers, String body) {
         HttpUriRequest postRequest = createRequestWithPayload(url, headers, HttpRequestFactory.PATCH, body);
         return executeRequest(postRequest);
     }
 
 
-    private JsonNode executeRequest(HttpUriRequest request) {
-        try (CloseableHttpResponse response = httpClient.execute(request)) {
-            HttpEntity entity = response.getEntity();
-
-            if (entity != null) {
-                String jsonString = EntityUtils.toString(entity);
-
-                System.out.println(objectMapper.readTree(jsonString));
-                return objectMapper.readTree(jsonString);
-            }
-        } catch (IOException e) {
+    private CloseableHttpResponse executeRequest(HttpUriRequest request) {
+        Objects.requireNonNull(request, "request cannot be null");
+//        try (CloseableHttpResponse response = httpClient.execute(request)) {
+//            System.out.println("ogin");
+//                return response;
+//        }
+        try {
+            CloseableHttpResponse response = httpClient.execute(request);
+            System.out.println("ogin");
+            System.out.println("response: " + response);
+            return response;
+        }
+        catch (IOException e) {
             throw new RuntimeException("Http request execution failed", e);
         }
-        return null;
     }
 
 
