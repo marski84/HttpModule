@@ -1,25 +1,15 @@
-package org.localhost.httpmodule;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+package org.localhost.httpmodule.httpHandler;
 import org.apache.http.Header;
-import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.*;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
 import org.localhost.httpmodule.httpRequestUtils.HttpRequestFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
-import java.net.http.HttpResponse;
 import java.util.Objects;
 
 
-//@Service
 public class HttpHandlerImpl implements HttpHandler {
-    private static final Logger log = LoggerFactory.getLogger(HttpHandlerImpl.class);
+
     private final CloseableHttpClient httpClient = HttpClients.createDefault();
 
     @Override
@@ -54,21 +44,13 @@ public class HttpHandlerImpl implements HttpHandler {
 
     private CloseableHttpResponse executeRequest(HttpUriRequest request) {
         Objects.requireNonNull(request, "request cannot be null");
-//        try (CloseableHttpResponse response = httpClient.execute(request)) {
-//            System.out.println("ogin");
-//                return response;
-//        }
         try {
-            CloseableHttpResponse response = httpClient.execute(request);
-            System.out.println("ogin");
-            System.out.println("response: " + response);
-            return response;
+            return httpClient.execute(request);
         }
         catch (IOException e) {
             throw new RuntimeException("Http request execution failed", e);
         }
     }
-
 
     private HttpUriRequest createSimpleRequest(String url, Header[] headers, String method) {
         Objects.requireNonNull(url, "url cannot be null");

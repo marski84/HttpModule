@@ -1,6 +1,5 @@
-package org.localhost.httpmodule;
+package org.localhost.httpmodule.httpHandler;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.http.Header;
 import org.apache.http.client.methods.CloseableHttpResponse;
 
