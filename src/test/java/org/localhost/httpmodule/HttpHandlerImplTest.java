@@ -9,18 +9,20 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 
 import org.junit.jupiter.api.*;
 import org.localhost.httpmodule.httpHandler.HttpHandlerImpl;
-import org.localhost.httpmodule.httpUtils.HttpUtils;
+import org.localhost.httpmodule.httpHandler.httpRequestUtils.exceptions.RequestFailedException;
+import org.localhost.httpmodule.httpHandler.httpRequestUtils.exceptions.ResponseBodyExtractionException;
+import org.localhost.httpmodule.httpHandler.httpRequestUtils.exceptions.UrlCreationException;
+import org.localhost.httpmodule.httpHandler.httpUtils.HttpUtils;
 
 import java.io.IOException;
 
-import static org.junit.Assert.assertEquals;
+
 
 
 class HttpHandlerImplTest {
 
 //    test config
     private final HttpHandlerImpl objectUnderTest = new HttpHandlerImpl();
-    private final String testUrl = "http://localhost:8089";
     public static MockWebServer mockBackEnd;
     ObjectMapper objectMapper = new ObjectMapper();
 
@@ -36,21 +38,13 @@ class HttpHandlerImplTest {
         mockBackEnd.shutdown();
     }
 
-    @BeforeEach
-    void initialize() {
-//        http://localhost:54825
-        String baseUrl = String.format(
-                "http://localhost:%s",
-                mockBackEnd.getPort()
-        );
-    }
 //    end of test config
 
 
 
     @Test
-    @DisplayName("It should make a succesful get request")
-    void getRequestTest() throws JsonProcessingException {
+    @DisplayName("It should make a successful get request")
+    void getRequestTest() throws JsonProcessingException, RequestFailedException, UrlCreationException, ResponseBodyExtractionException {
         String expectedBody = "{\"id\":\"1\",\"name\":\"Google Pixel 6 Pro\",\"data\":{\"color\":\"Cloudy White\",\"capacity\":\"128 GB\"}}";
         MockResponse response = new MockResponse()
                 .addHeader("Content-Type", "application/json; charset=utf-8")
@@ -66,7 +60,6 @@ class HttpHandlerImplTest {
         Assertions.assertEquals("HTTP/1.1 200 OK", String.valueOf(testResult.getStatusLine()));
         Assertions.assertEquals(response.getHeaders().get("Content-Type"), String.valueOf(testResult.getEntity().getContentType().getValue()));
 
-        ObjectMapper objectMapper = new ObjectMapper();
         JsonNode expectedJson = objectMapper.readTree(expectedBody);
         JsonNode actualJson = objectMapper.readTree(actualBody);
 
@@ -76,10 +69,10 @@ class HttpHandlerImplTest {
 
     @Test
     @DisplayName("It should perform successful delete request")
-    void deleteRequestTest() throws JsonProcessingException {
-        String expectedBody = "{\n" +
-                "   \"message\": \"Object with id = 6, has been deleted.\"\n" +
-                "}";
+    void deleteRequestTest() throws JsonProcessingException, RequestFailedException, UrlCreationException, ResponseBodyExtractionException {
+        String expectedBody = """
+                   "message": "Object with id = 6, has been deleted."
+                }""";
         MockResponse response = new MockResponse()
                 .addHeader("Content-Type", "application/json; charset=utf-8")
                 .setBody(expectedBody);
@@ -94,7 +87,6 @@ class HttpHandlerImplTest {
         Assertions.assertEquals("HTTP/1.1 200 OK", String.valueOf(testResult.getStatusLine()));
         Assertions.assertEquals(response.getHeaders().get("Content-Type"), String.valueOf(testResult.getEntity().getContentType().getValue()));
 
-        ObjectMapper objectMapper = new ObjectMapper();
         JsonNode expectedJson = objectMapper.readTree(expectedBody);
         JsonNode actualJson = objectMapper.readTree(actualBody);
 
@@ -103,28 +95,30 @@ class HttpHandlerImplTest {
 
     @Test
     @DisplayName("it should perform successful post request")
-    void postRequestTest() throws IOException {
-        String expectedBody = "{\n" +
-        "   \"id\": \"7\",\n" +
-        "   \"name\": \"Apple MacBook Pro 16\",\n" +
-        "   \"data\": {\n" +
-        "      \"year\": 2019,\n" +
-        "      \"price\": 1849.99,\n" +
-        "      \"CPU model\": \"Intel Core i9\",\n" +
-        "      \"Hard disk size\": \"1 TB\"\n" +
-        "   },\n" +
-        "   \"createdAt\": \"2022-11-21T20:06:23.986Z\"\n" +
-        "}";
+    void postRequestTest() throws IOException, RequestFailedException, UrlCreationException, ResponseBodyExtractionException {
+        String expectedBody = """
+                {
+                   "id": "7",
+                   "name": "Apple MacBook Pro 16",
+                   "data": {
+                      "year": 2019,
+                      "price": 1849.99,
+                      "CPU model": "Intel Core i9",
+                      "Hard disk size": "1 TB"
+                   },
+                   "createdAt": "2022-11-21T20:06:23.986Z"
+                }""";
 
-        String postReqBody = "{\n" +
-                "   \"name\": \"Apple MacBook Pro 16\",\n" +
-                "   \"data\": {\n" +
-                "      \"year\": 2019,\n" +
-                "      \"price\": 1849.99,\n" +
-                "      \"CPU model\": \"Intel Core i9\",\n" +
-                "      \"Hard disk size\": \"1 TB\"\n" +
-                "   }\n" +
-                "}";
+        String postReqBody = """
+                {
+                   "name": "Apple MacBook Pro 16",
+                   "data": {
+                      "year": 2019,
+                      "price": 1849.99,
+                      "CPU model": "Intel Core i9",
+                      "Hard disk size": "1 TB"
+                   }
+                }""";
         String baseUrl = String.format("http://localhost:%s",
                 mockBackEnd.getPort());
         MockResponse response = new MockResponse()
@@ -160,31 +154,34 @@ class HttpHandlerImplTest {
 
     @Test
     @DisplayName("It should perform successful put request")
-    void putRequestTest() throws JsonProcessingException {
-        String expectedBody = "{\n" +
-                "   \"id\": \"7\",\n" +
-                "   \"name\": \"Apple MacBook Pro 16\",\n" +
-                "   \"data\": {\n" +
-                "      \"year\": 2019,\n" +
-                "      \"price\": 2049.99,\n" +
-                "      \"CPU model\": \"Intel Core i9\",\n" +
-                "      \"Hard disk size\": \"1 TB\",\n" +
-                "      \"color\": \"silver\"\n" +
-                "   },\n" +
-                "   \"updatedAt\": \"2022-12-25T21:08:41.986Z\"\n" +
-                "}\n" +
-                "\n";
+    void putRequestTest() throws JsonProcessingException, RequestFailedException, UrlCreationException, ResponseBodyExtractionException {
+        String expectedBody = """
+                {
+                   "id": "7",
+                   "name": "Apple MacBook Pro 16",
+                   "data": {
+                      "year": 2019,
+                      "price": 2049.99,
+                      "CPU model": "Intel Core i9",
+                      "Hard disk size": "1 TB",
+                      "color": "silver"
+                   },
+                   "updatedAt": "2022-12-25T21:08:41.986Z"
+                }
 
-        String putReqBody = "{\n" +
-                "   \"name\": \"Apple MacBook Pro 16\",\n" +
-                "   \"data\": {\n" +
-                "      \"year\": 2019,\n" +
-                "      \"price\": 2049.99,\n" +
-                "      \"CPU model\": \"Intel Core i9\",\n" +
-                "      \"Hard disk size\": \"1 TB\",\n" +
-                "      \"color\": \"silver\"\n" +
-                "   }\n" +
-                "}";
+                """;
+
+        String putReqBody = """
+                {
+                   "name": "Apple MacBook Pro 16",
+                   "data": {
+                      "year": 2019,
+                      "price": 2049.99,
+                      "CPU model": "Intel Core i9",
+                      "Hard disk size": "1 TB",
+                      "color": "silver"
+                   }
+                }""";
         String baseUrl = String.format("http://localhost:%s",
                 mockBackEnd.getPort());
         MockResponse response = new MockResponse()
@@ -216,22 +213,24 @@ class HttpHandlerImplTest {
 
     @Test
     @DisplayName("It should perform successful patch request")
-    void patchRequestTest() throws JsonProcessingException {
-        String expectedBody = "{\n" +
-                "   \"id\": \"7\",\n" +
-                "   \"name\": \"Apple MacBook Pro 16 (Updated Name)\",\n" +
-                "   \"data\": {\n" +
-                "      \"year\": 2019,\n" +
-                "      \"price\": 1849.99,\n" +
-                "      \"CPU model\": \"Intel Core i9\",\n" +
-                "      \"Hard disk size\": \"1 TB\"\n" +
-                "   },\n" +
-                "   \"updatedAt\": \"2022-12-25T21:09:46.986Z\"\n" +
-                "}";
+    void patchRequestTest() throws JsonProcessingException, RequestFailedException, UrlCreationException, ResponseBodyExtractionException {
+        String expectedBody = """
+                {
+                   "id": "7",
+                   "name": "Apple MacBook Pro 16 (Updated Name)",
+                   "data": {
+                      "year": 2019,
+                      "price": 1849.99,
+                      "CPU model": "Intel Core i9",
+                      "Hard disk size": "1 TB"
+                   },
+                   "updatedAt": "2022-12-25T21:09:46.986Z"
+                }""";
 
-        String patchReqBody = "{\n" +
-                "   \"name\": \"Apple MacBook Pro 16 (Updated Name)\"\n" +
-                "}";
+        String patchReqBody = """
+                {
+                   "name": "Apple MacBook Pro 16 (Updated Name)"
+                }""";
 
         String baseUrl = String.format("http://localhost:%s",
                 mockBackEnd.getPort());

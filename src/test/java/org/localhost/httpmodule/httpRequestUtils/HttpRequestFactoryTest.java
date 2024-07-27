@@ -9,7 +9,10 @@ import org.apache.http.message.BasicHeader;
 import org.apache.http.util.EntityUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.localhost.httpmodule.exceptions.NoSuchHttpMethodException;
+import org.localhost.httpmodule.httpHandler.httpRequestUtils.exceptions.NoSuchHttpMethodException;
+import org.localhost.httpmodule.httpHandler.httpRequestUtils.exceptions.NotValidParameterException;
+import org.localhost.httpmodule.httpHandler.httpRequestUtils.exceptions.UrlCreationException;
+import org.localhost.httpmodule.httpHandler.httpRequestUtils.HttpRequestFactory;
 
 import java.io.IOException;
 import java.util.List;
@@ -18,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class HttpRequestFactoryTest {
 
-    HttpUriRequest createRequest(String url, String method) {
+    HttpUriRequest createRequest(String url, String method) throws UrlCreationException {
         //        given, when
         HttpUriRequest result = HttpRequestFactory.createRequestForUrl(url, method);
 //        then
@@ -31,31 +34,31 @@ class HttpRequestFactoryTest {
 
     @Test
     @DisplayName("It should create valid GET request")
-    void createGetRequestForUrl() {
+    void createGetRequestForUrl() throws UrlCreationException {
         createRequest("http://localhost/", HttpRequestFactory.GET);
     }
 
     @Test
     @DisplayName("It should create valid POST request")
-    void createPostRequestForUrl() {
+    void createPostRequestForUrl() throws UrlCreationException {
         createRequest("http://localhost/", HttpRequestFactory.POST);
     }
 
     @Test
     @DisplayName("It should create valid PUT request")
-    void createPutRequestForUrl() {
+    void createPutRequestForUrl() throws UrlCreationException {
         createRequest("http://localhost/", HttpRequestFactory.PUT);
     }
 
     @Test
     @DisplayName("It should create valid PATCH request")
-    void createPatchRequestForUrl() {
+    void createPatchRequestForUrl() throws UrlCreationException {
         createRequest("http://localhost/", HttpRequestFactory.PATCH);
     }
 
     @Test
     @DisplayName("It should create valid DELETE request")
-    void createDeleteRequestForUrl() {
+    void createDeleteRequestForUrl() throws UrlCreationException {
         createRequest("http://localhost/", HttpRequestFactory.DELETE);
 
     }
@@ -78,7 +81,7 @@ class HttpRequestFactoryTest {
     }
 
     @Test
-    void addHttpHeaders() {
+    void addHttpHeaders() throws UrlCreationException {
 //        given
         HttpUriRequest getRequest = createRequest("http://localhost/", HttpRequestFactory.GET);
         HttpUriRequest postRequest = createRequest("http://localhost/", HttpRequestFactory.POST);
@@ -90,32 +93,33 @@ class HttpRequestFactoryTest {
                 getRequest, postRequest, putRequest, patchRequest, deleteRequest
         );
         final Header header = new BasicHeader(HttpHeaders.CONTENT_TYPE, "application/json");
+        List<Header> headers = List.of(header);
 //        then
-        requests.forEach(req -> HttpRequestFactory.addHttpHeaders(req, new Header[]{header}));
+        requests.forEach(req -> HttpRequestFactory.addHttpHeaders(req, headers));
         requests.forEach(req -> assertEquals(header, req.getHeaders("Content-Type")[0]));
     }
 
     @Test
     @DisplayName("addHeaders should throw when request is null")
     void shouldThrowWhenRequestIsNull() {
-        assertThrows(NullPointerException.class, () -> {
-            HttpRequestFactory.addHttpHeaders(null, new Header[]{});
+        assertThrows(NotValidParameterException.class, () -> {
+            HttpRequestFactory.addHttpHeaders(null, List.of());
         });
     }
 
     @Test
     @DisplayName("addHeaders should throw when header is null")
-    void shouldThrowWhenHeaderIsNull() {
+    void shouldThrowWhenHeaderIsNull() throws UrlCreationException {
         HttpUriRequest getRequest = createRequest("http://localhost/", HttpRequestFactory.GET);
 
-        assertThrows(NullPointerException.class, () -> {
+        assertThrows(NotValidParameterException.class, () -> {
             HttpRequestFactory.addHttpHeaders(getRequest, null);
         });
     }
 
     @Test
     @DisplayName("It should add given payload to request")
-    void addPayload() throws IOException {
+    void addPayload() throws IOException, UrlCreationException {
         // given
         HttpUriRequest postRequest = createRequest("http://localhost/", HttpRequestFactory.POST);
         HttpUriRequest putRequest = createRequest("http://localhost/", HttpRequestFactory.PUT);
@@ -129,8 +133,7 @@ class HttpRequestFactoryTest {
         requests.forEach(req -> HttpRequestFactory.addPayload(req, payload));
 
         for (HttpUriRequest request : requests) {
-            if (request instanceof HttpEntityEnclosingRequest) {
-                HttpEntityEnclosingRequest entityRequest = (HttpEntityEnclosingRequest) request;
+            if (request instanceof HttpEntityEnclosingRequest entityRequest) {
                 HttpEntity entity = entityRequest.getEntity();
                 String actualPayload = EntityUtils.toString(entity);
                 assertEquals(payload, actualPayload);
@@ -140,10 +143,10 @@ class HttpRequestFactoryTest {
 
     @Test
     @DisplayName("It should throw when given payload is null")
-    void addPayloadShouldThrowWhenPayloadIsNull() {
+    void addPayloadShouldThrowWhenPayloadIsNull() throws UrlCreationException {
 //        given, when, then
         HttpUriRequest postRequest = createRequest("http://localhost/", HttpRequestFactory.POST);
-        assertThrows(NullPointerException.class, () -> HttpRequestFactory.addPayload(postRequest, null));
+        assertThrows(NotValidParameterException.class, () -> HttpRequestFactory.addPayload(postRequest, null));
     }
 
     @Test
@@ -151,7 +154,7 @@ class HttpRequestFactoryTest {
     void addPayloadShouldThrowWhenUrlIsNull() {
 //        given, when, then
         final String payload = "testPayload";
-        assertThrows(NullPointerException.class, () -> HttpRequestFactory.addPayload(null,payload ));
+        assertThrows(NotValidParameterException.class, () -> HttpRequestFactory.addPayload(null,payload ));
 
     }
 }

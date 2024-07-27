@@ -1,4 +1,4 @@
-package org.localhost.httpmodule.exceptions;
+package org.localhost.httpmodule.httpHandler.httpRequestUtils.exceptions;
 
 public class HttpMethodNotSuitableForPayloadException extends RuntimeException {
 }
