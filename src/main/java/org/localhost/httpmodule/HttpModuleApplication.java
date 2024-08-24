@@ -3,6 +3,8 @@ package org.localhost.httpmodule;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 //@SpringBootApplication
 public class HttpModuleApplication {
@@ -22,6 +24,8 @@ public class HttpModuleApplication {
 //        JsonNode object= httpHandler.post("https://api.restful-api.dev/objects", null, jsonString);
 //        httpHandler.delete("https://api.restful-api.dev/objects/ff80818190966d7f01909dfb82081637", null);
 
+        Map<String , String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
 
 
 

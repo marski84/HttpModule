@@ -8,11 +8,11 @@ import okhttp3.mockwebserver.MockWebServer;
 import org.apache.http.client.methods.CloseableHttpResponse;
 
 import org.junit.jupiter.api.*;
-import org.localhost.httpmodule.httpHandler.HttpHandlerImpl;
-import org.localhost.httpmodule.httpHandler.httpRequestUtils.exceptions.RequestFailedException;
-import org.localhost.httpmodule.httpHandler.httpRequestUtils.exceptions.ResponseBodyExtractionException;
-import org.localhost.httpmodule.httpHandler.httpRequestUtils.exceptions.UrlCreationException;
-import org.localhost.httpmodule.httpHandler.httpUtils.HttpUtils;
+import org.localhost.httpmodule.handler.HttpHandlerImpl;
+import org.localhost.httpmodule.handler.exceptions.RequestFailedException;
+import org.localhost.httpmodule.handler.exceptions.ResponseBodyExtractionException;
+import org.localhost.httpmodule.handler.exceptions.UrlCreationException;
+import org.localhost.httpmodule.handler.httpUtils.HttpUtils;
 
 import java.io.IOException;
 

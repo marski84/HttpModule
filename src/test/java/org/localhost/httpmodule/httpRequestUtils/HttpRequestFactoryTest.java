@@ -9,10 +9,10 @@ import org.apache.http.message.BasicHeader;
 import org.apache.http.util.EntityUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.localhost.httpmodule.httpHandler.httpRequestUtils.exceptions.NoSuchHttpMethodException;
-import org.localhost.httpmodule.httpHandler.httpRequestUtils.exceptions.NotValidParameterException;
-import org.localhost.httpmodule.httpHandler.httpRequestUtils.exceptions.UrlCreationException;
-import org.localhost.httpmodule.httpHandler.httpRequestUtils.HttpRequestFactory;
+import org.localhost.httpmodule.handler.exceptions.NoSuchHttpMethodException;
+import org.localhost.httpmodule.handler.exceptions.NotValidParameterException;
+import org.localhost.httpmodule.handler.exceptions.UrlCreationException;
+import org.localhost.httpmodule.handler.httpRequestUtils.HttpRequestFactory;
 
 import java.io.IOException;
 import java.util.List;

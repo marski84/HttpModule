@@ -1,4 +1,4 @@
-package org.localhost.httpmodule.httpHandler.httpUtils;
+package org.localhost.httpmodule.handler.httpUtils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.util.EntityUtils;
-import org.localhost.httpmodule.httpHandler.httpRequestUtils.exceptions.ResponseBodyExtractionException;
+import org.localhost.httpmodule.handler.exceptions.ResponseBodyExtractionException;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;

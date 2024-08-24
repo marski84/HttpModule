@@ -1,4 +1,4 @@
-package org.localhost.httpmodule.httpHandler.httpRequestUtils.exceptions;
+package org.localhost.httpmodule.handler.exceptions;
 
 public class ResponseBodyExtractionException extends Exception {
     public ResponseBodyExtractionException(String message) {

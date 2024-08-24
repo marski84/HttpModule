@@ -1,12 +1,12 @@
-package org.localhost.httpmodule.httpHandler.httpRequestUtils;
+package org.localhost.httpmodule.handler.httpRequestUtils;
 
 import org.apache.http.Header;
 import org.apache.http.client.methods.*;
 import org.apache.http.entity.StringEntity;
-import org.localhost.httpmodule.httpHandler.httpRequestUtils.exceptions.NoSuchHttpMethodException;
-import org.localhost.httpmodule.httpHandler.httpRequestUtils.exceptions.NotValidParameterException;
-import org.localhost.httpmodule.httpHandler.httpRequestUtils.exceptions.PayloadInitFailedException;
-import org.localhost.httpmodule.httpHandler.httpRequestUtils.exceptions.UrlCreationException;
+import org.localhost.httpmodule.handler.exceptions.NoSuchHttpMethodException;
+import org.localhost.httpmodule.handler.exceptions.NotValidParameterException;
+import org.localhost.httpmodule.handler.exceptions.PayloadInitFailedException;
+import org.localhost.httpmodule.handler.exceptions.UrlCreationException;
 
 import java.net.MalformedURLException;
 import java.net.URI;

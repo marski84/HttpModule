@@ -1,4 +1,4 @@
-package org.localhost.httpmodule.httpHandler.httpRequestUtils.exceptions;
+package org.localhost.httpmodule.handler.exceptions;
 
 public class PayloadInitFailedException extends RuntimeException {
     public PayloadInitFailedException(String message) {}

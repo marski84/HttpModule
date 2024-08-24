@@ -1,11 +1,12 @@
-package org.localhost.httpmodule.httpHandler;
+package org.localhost.httpmodule.handler;
+import okhttp3.OkHttpClient;
 import org.apache.http.Header;
 import org.apache.http.client.methods.*;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.localhost.httpmodule.httpHandler.httpRequestUtils.exceptions.RequestFailedException;
-import org.localhost.httpmodule.httpHandler.httpRequestUtils.exceptions.UrlCreationException;
-import org.localhost.httpmodule.httpHandler.httpRequestUtils.HttpRequestFactory;
+import org.localhost.httpmodule.handler.exceptions.RequestFailedException;
+import org.localhost.httpmodule.handler.exceptions.UrlCreationException;
+import org.localhost.httpmodule.handler.httpRequestUtils.HttpRequestFactory;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -13,6 +14,8 @@ import java.util.Objects;
 public class HttpHandlerImpl implements HttpHandler {
 
     private final CloseableHttpClient httpClient = HttpClients.createDefault();
+    private final OkHttpClient client = new OkHttpClient();
+
 
     @Override
     public CloseableHttpResponse get(String url, Header[] headers) throws RequestFailedException, UrlCreationException {

@@ -1,9 +1,9 @@
-package org.localhost.httpmodule.httpHandler;
+package org.localhost.httpmodule.handler;
 
 import org.apache.http.Header;
 import org.apache.http.client.methods.CloseableHttpResponse;
-import org.localhost.httpmodule.httpHandler.httpRequestUtils.exceptions.RequestFailedException;
-import org.localhost.httpmodule.httpHandler.httpRequestUtils.exceptions.UrlCreationException;
+import org.localhost.httpmodule.handler.exceptions.RequestFailedException;
+import org.localhost.httpmodule.handler.exceptions.UrlCreationException;
 
 public interface HttpHandler {
 
