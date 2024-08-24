@@ -6,43 +6,38 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.localhost.httpmodule.handler.exceptions.RequestFailedException;
 import org.localhost.httpmodule.handler.exceptions.UrlCreationException;
-import org.localhost.httpmodule.handler.httpRequestUtils.HttpRequestFactory;
 import java.io.IOException;
 import java.util.Objects;
 
 
 public class HttpHandlerImpl implements HttpHandler {
 
-    private final CloseableHttpClient httpClient = HttpClients.createDefault();
-    private final OkHttpClient client = new OkHttpClient();
-
-
     @Override
     public CloseableHttpResponse get(String url, Header[] headers) throws RequestFailedException, UrlCreationException {
-        HttpUriRequest getRequest = createSimpleRequest(url, headers, HttpRequestFactory.GET);
+        HttpUriRequest getRequest = createSimpleRequest(url, headers, "");
         return executeRequest(getRequest);
     }
 
     @Override
     public CloseableHttpResponse delete(String url, Header[] headers) throws RequestFailedException, UrlCreationException {
-        HttpUriRequest deleteRequest = createSimpleRequest(url, headers, HttpRequestFactory.DELETE);
+        HttpUriRequest deleteRequest = createSimpleRequest(url, headers, "");
         return executeRequest(deleteRequest);
     }
 
     @Override
     public CloseableHttpResponse post(String url, Header[] headers, String body) throws RequestFailedException, UrlCreationException {
-        HttpUriRequest postRequest = createRequestWithPayload(url, headers, HttpRequestFactory.POST, body);
+        HttpUriRequest postRequest = createRequestWithPayload(url, headers, "HttpRequestFactory.POST", body);
         return executeRequest(postRequest);
     }
 
     @Override
     public CloseableHttpResponse put(String url, Header[] headers, String body) throws RequestFailedException, UrlCreationException {
-        HttpUriRequest postRequest = createRequestWithPayload(url, headers, HttpRequestFactory.PUT, body);
+        HttpUriRequest postRequest = createRequestWithPayload(url, headers, "HttpRequestFactory.PUT", body);
         return executeRequest(postRequest);    }
 
     @Override
     public CloseableHttpResponse patch(String url, Header[] headers, String body) throws RequestFailedException, UrlCreationException {
-        HttpUriRequest postRequest = createRequestWithPayload(url, headers, HttpRequestFactory.PATCH, body);
+        HttpUriRequest postRequest = createRequestWithPayload(url, headers, "HttpRequestFactory.PATCH", body);
         return executeRequest(postRequest);
     }
 
@@ -58,13 +53,8 @@ public class HttpHandlerImpl implements HttpHandler {
 
     private HttpUriRequest createSimpleRequest(String url, Header[] headers, String method) throws UrlCreationException {
         Objects.requireNonNull(url, "url cannot be null");
-        HttpUriRequest request = HttpRequestFactory.createRequestForUrl(url, method);
-        if (headers != null) {
-            for (Header header : headers) {
-                request.addHeader(header.getName(), header.getValue());
-            }
-        }
-        return request;
+
+        return null;
     }
 
     private HttpUriRequest createRequestWithPayload(
@@ -74,16 +64,8 @@ public class HttpHandlerImpl implements HttpHandler {
             String body
     ) throws UrlCreationException {
         Objects.requireNonNull(url, "url cannot be null");
-        HttpUriRequest request = HttpRequestFactory.createRequestForUrl(url, method);
-        if (headers != null) {
-            for (Header header : headers) {
-                request.addHeader(header.getName(), header.getValue());
-            }
-        }
-        if (body != null) {
-            HttpRequestFactory.addPayload(request, body);
-        }
-        return request;
+
+        return null;
     }
 
 }
