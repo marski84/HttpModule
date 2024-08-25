@@ -2,6 +2,7 @@ package org.localhost.httpmodule.handler.RequestBuilder;
 
 import okhttp3.*;
 import org.localhost.httpmodule.handler.exceptions.*;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.net.MalformedURLException;
@@ -11,6 +12,7 @@ import java.net.URL;
 import java.util.Map;
 
 @Component
+@Scope("prototype")
 public class RequestBuilderImpl implements RequestBuilder {
     public static final String GET = "GET";
     public static final String POST = "POST";
