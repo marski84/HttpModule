@@ -1,7 +1,7 @@
-package org.localhost.httpmodule.handler.RequestBuilder;
+package org.localhost.httpmodule.facade.RequestBuilder.RequestBuilder;
 
 import okhttp3.*;
-import org.localhost.httpmodule.handler.exceptions.*;
+import org.localhost.httpmodule.facade.exceptions.*;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 

@@ -1,4 +1,4 @@
-package org.localhost.httpmodule.handler.exceptions;
+package org.localhost.httpmodule.facade.exceptions;
 
 public class ResponseBodyExtractionException extends Exception {
     public ResponseBodyExtractionException(String message) {

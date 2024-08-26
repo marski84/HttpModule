@@ -1,9 +1,13 @@
-package org.localhost.httpmodule.service;
+package org.localhost.httpmodule.facade.service;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import org.localhost.httpmodule.handler.RequestBuilder.RequestBuilderImpl;
-import org.localhost.httpmodule.handler.exceptions.NotValidParameterException;
+import okhttp3.Response;
+import org.localhost.httpmodule.facade.RequestBuilder.RequestBuilder.RequestBuilderImpl;
+import org.localhost.httpmodule.facade.exceptions.NotValidParameterException;
+import org.localhost.httpmodule.facade.exceptions.RequestNotValidException;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.Map;
 
 @Service
@@ -13,6 +17,13 @@ public class HttpServiceImpl implements HttpService {
     public static final String PUT = "PUT";
     public static final String PATCH = "PATCH";
     public static final String DELETE = "DELETE";
+
+    private final OkHttpClient client;
+
+    public HttpServiceImpl(OkHttpClient client) {
+        this.client = client;
+    }
+
 
     @Override
     public Request createGetRequest(String url) {
@@ -136,6 +147,17 @@ public class HttpServiceImpl implements HttpService {
     private void validateInputHeader(Map<String, String> headers) {
         if (headers == null || headers.isEmpty()) {
             throw new NotValidParameterException("Request headers cannot be null or empty!");
+        }
+    }
+
+    public Response executeRequest(Request request) {
+        if (request == null) {
+            throw new RequestNotValidException("Request cannot be null");
+        }
+        try {
+            return client.newCall(request).execute();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to execute request", e);
         }
     }
 }

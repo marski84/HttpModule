@@ -1,6 +1,7 @@
-package org.localhost.httpmodule.service;
+package org.localhost.httpmodule.facade.service;
 
 import okhttp3.Request;
+import okhttp3.Response;
 
 import java.util.Map;
 
@@ -19,4 +20,6 @@ public interface HttpService {
 
     Request createPutRequest(String url, String body);
     Request createPutRequest(String url, String body, Map<String, String> headers);
+
+    Response executeRequest(Request request);
 }

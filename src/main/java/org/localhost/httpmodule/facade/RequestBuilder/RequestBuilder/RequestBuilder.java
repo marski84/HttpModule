@@ -1,4 +1,4 @@
-package org.localhost.httpmodule.handler.RequestBuilder;
+package org.localhost.httpmodule.facade.RequestBuilder.RequestBuilder;
 
 import okhttp3.Request;
 
